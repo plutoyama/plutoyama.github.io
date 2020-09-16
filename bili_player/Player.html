@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>flv.js demo</title>
+    <style>
+        .mainContainer {
+            display: block;
+            width: 1024px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .urlInput {
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .centeredVideo {
+            display: block;
+            width: 100%;
+            height: 576px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+        }
+
+        .controls {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainContainer">
+        <video id="videoElement" class="centeredVideo" controls autoplay width="1024" height="576">Your browser is too
+            old which doesn't support HTML5 video.</video>
+    </div>
+    <br>
+    <div class="controls">
+        <!--<button onclick="flv_load()">加载</button>-->
+        <button onclick="flv_start()">开始</button>
+        <button onclick="flv_pause()">暂停</button>
+        <button onclick="flv_destroy()">停止</button>
+        <input style="width:100px" type="text" name="seekpoint" />
+        <button onclick="flv_seekto()">跳转</button>
+    </div>
+    <script src="flv.min.js" crossorigin="anonymous"></script>
+    <script>
+        var player = document.getElementById('videoElement');
+        if (flvjs.isSupported()) {
+            var flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                url: 'http://play-tx-hdl.huomaotv.cn/live/bvJRSY63208.flv?t=1600245124&r=568378764366&stream=bvJRSY63208&rid=oubvc2y3v&token=0733ca685a331388cc84ace4c6202183&url=http%3A%2F%2Fplay-tx-hdl.huomaotv.cn%2Flive%2FbvJRSY63208.flv&from=huomaoh5room'
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load(); //加载
+        }
+
+        function flv_start() {
+            player.play();
+        }
+
+        function flv_pause() {
+            player.pause();
+        }
+
+        function flv_destroy() {
+            player.pause();
+            player.unload();
+            player.detachMediaElement();
+            player.destroy();
+            player = null;
+        }
+
+        function flv_seekto() {
+            player.currentTime = parseFloat(document.getElementsByName('seekpoint')[0].value);
+        }
+    </script>
+</body>
+
+</html>
+
+
+<!-- <body>
+    <div id="basePlayer"></div>
+    <script type="text/javascript">
+        var queryStr = window.document.location.search;
+        var url = (queryStr.match(/(=)[^&]*/g))[0].substr(1);
+        console.log("Url: " + url);
+        var livePlayer = document.getElementById("basePlayer");
+        var div = document.createElement("div");
+        div.innerHTML = "<live-player id='livePlayer' video-url='" + url + "' live='true' stretch='true'></live-player>";
+        console.log("HTML: " + div.innerHTML);
+        livePlayer.appendChild(div);
+    </script>
+</body> -->
